@@ -223,7 +223,7 @@ public class mainUI {
 		initializeStaion(startStation);
 		initializeStaion(endStation);
 
-		ImageIcon ii = new ImageIcon("train.png");	
+		ImageIcon ii = new ImageIcon("img/train.png");	
 		JLabel image = new JLabel(ii);
 		image.setBounds(0, 20, 350, 176);
 		frame.getContentPane().add(image);
