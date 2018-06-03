@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,19 +8,32 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class constVar {
+import tools.MysqlExe;
+
+public class ConstVar {
 	public static final int FETCH_DAYS = 28;
 	public static final String[] WEEKDAYS = {
 		"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
 	};
+	public static final String[] TICKET_TYPE = {
+			"標準", "學生", "愛心/孩童/敬老", "商務" //, "早鳥"
+		};
+	public static final String[] TICKET_TYPE_2 = {
+			"標準", "學生", "愛心/孩童/敬老", "商務", "早鳥"
+		};
+	public static final String[] SEAT_TYPE = {
+			"隨機", "靠窗", "靠走道"
+		};
+		
+	
 	public static final int BUSS_CABIN = 5;	// 0 base
 	public static final int TOTAL_CABIN = 9;
-	public static final int TOTAL_SEATS = 737; 
-	public static final int CABIN_SEATS[] = {63, 96, 88, 96, 83, 66, 61, 96 ,88};
+	public static final int TOTAL_SEATS = 733; 
+	public static final int CABIN_SEATS[] = {63, 96, 88, 96, 83, 66, 57, 96 ,88};
 	public static final String[][] VALID_SEATS;
 	
-	public static final String[] SIDE = {"C", "D"};
-	public static final String[] WINDOW = {"A", "E"};
+	public static final int WINDOW = 1;	
+	public static final int SIDE = 2;
 	
 	static {
 		// initialize valid seats
@@ -80,33 +94,64 @@ public class constVar {
 			}
 		}
 		tmp.addAll(Arrays.asList("12D", "12E"));
-		tmp.addAll(Arrays.asList("NO1", "NO2", "NO3", "NO4"));
+		//tmp.addAll(Arrays.asList("NO1", "NO2", "NO3", "NO4"));
 		VALID_SEATS[6] = tmp.toArray(new String[tmp.size()]);		
 	}
 	
-	public static int getWeekDay(int date) throws ParseException {
+	public static int getWeekDay(int date) {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyyMMdd");
-		Date dat = format1.parse(Integer.toString(date));
+		Date dat = null;
+		try {
+			dat = format1.parse(Integer.toString(date));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Calendar c = Calendar.getInstance();
 		c.setTime(dat);
 		return (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 	}
 	
-	public static int getWeekDay(String date) throws ParseException {
+	public static int getWeekDay(String date) {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyyMMdd");
-		Date dat = format1.parse(date.replace("/", ""));
+		Date dat = null;
+		try {
+			dat = format1.parse(date.replace("/", ""));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Calendar c = Calendar.getInstance();
 		c.setTime(dat);
 		return (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 	}
 	
-	public static void main(String[] args) {
+	public static int getDur(int t1, int t2) {
+		int h1 = t1 / 100;
+		int m1 = t1 % 100;
+		int h2 = t2 / 100;
+		int m2 = t2 % 100;
+		
+		int time = (h2 * 60 + m2) - (h1 * 60 + m1);
+		int hh = time / 60;
+		int mm = time % 60;
+		return hh * 100 + mm;
+	}
+	
+	public static void main(String[] args) throws SQLException {
 		for (int i = 0; i < 9; i++) {
-			if (VALID_SEATS[i] != null) {
-				System.out.println(VALID_SEATS[i].length);
-				for (String st: VALID_SEATS[i]) System.out.print(st + " ");
-				System.out.println("");
-			}		
+			for (String seat: VALID_SEATS[i]) {
+				int side = 0;
+				int business = 0;
+				if (seat.charAt(2) == 'A' || seat.charAt(2) == 'E') side = 1;
+				if (seat.charAt(2) == 'C' || seat.charAt(2) == 'D') side = 2;
+				if (i == 5) business = 1;
+//				mysqlExe.setDebug(1);
+				MysqlExe.execStmt(String.format("INSERT INTO allSeat VALUES (\"%02d%s\", %d, %d)", i + 1, seat, side, business));
+			}
+			System.out.println(VALID_SEATS[i].length);
+			for (String st: VALID_SEATS[i]) System.out.print(st + " ");
+			System.out.println("");
 		}
 	}	
 }

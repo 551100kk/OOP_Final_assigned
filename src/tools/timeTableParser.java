@@ -12,7 +12,7 @@ import org.jsoup.select.*;
  * The class which is used to parse online time table. 
  * @author Jerry
  */
-public class timeTableParser {
+public class TimeTableParser {
 
 	public Document doc;
 	public final String direction[] = {"timeTable_down", "timeTable_up"};
@@ -56,7 +56,7 @@ public class timeTableParser {
 				}
 				
 				String sql = String.format("INSERT INTO %s VALUES (%s)", direction[dir], String.join(", ", timeArray));
-				mysqlExe.execStmt(sql);
+				MysqlExe.execStmt(sql);
 			}	
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("No available train. dir = " + dir);
@@ -71,7 +71,7 @@ public class timeTableParser {
 	 */
 	public void updateDay(String date) throws SQLException, IOException {
 		System.out.println("Parsing date " + date);
-		mysqlExe.RetVal ret= mysqlExe.execQuery("SELECT COUNT(*) FROM timeTable_down WHERE date = " + date);
+		MysqlExe.RetVal ret= MysqlExe.execQuery("SELECT COUNT(*) FROM timeTable_down WHERE date = " + date);
 		ret.res.next();
 		int count = ret.res.getInt(1);
 		if (count > 0) {
@@ -79,8 +79,8 @@ public class timeTableParser {
 			return;
 		}
 		ret.conn.close();
-		mysqlExe.execStmt("DELETE FROM timeTable_down WHERE date = " + date);
-		mysqlExe.execStmt("DELETE FROM timeTable_up WHERE date = " + date);		
+		MysqlExe.execStmt("DELETE FROM timeTable_down WHERE date = " + date);
+		MysqlExe.execStmt("DELETE FROM timeTable_up WHERE date = " + date);		
 		getDoc("http://www.thsrc.com.tw/tw/TimeTable/DailyTimeTable/" + date);
 		parseDate(date, 0);
 		parseDate(date, 1);	
@@ -88,7 +88,7 @@ public class timeTableParser {
 	}
 	
 	public static void main(String[] args) throws SQLException, IOException {
-		timeTableParser T = new timeTableParser();
+		TimeTableParser T = new TimeTableParser();
 		T.updateDay("20180527");
 	}
 

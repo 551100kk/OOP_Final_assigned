@@ -1,7 +1,7 @@
 package tools;
 import java.sql.*;
 
-public class mysqlExe {
+public class MysqlExe {
 	private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/oop_finalproject_assigned?useSSL=false&serverTimezone=UTC";
 	private static final String USER = "root";
 	private static final String PASS = "root";
@@ -11,7 +11,7 @@ public class mysqlExe {
 		return debug;
 	}
 	public static void setDebug(int debug) {
-		mysqlExe.debug = debug;
+		MysqlExe.debug = debug;
 	}
 	
 	public static class RetVal {
@@ -35,6 +35,7 @@ public class mysqlExe {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = conn.createStatement();
 			stmt.execute(sql);
+			conn.close();
 		} catch (SQLException e) {
 			if (conn != null) conn.close();
 			throw e;

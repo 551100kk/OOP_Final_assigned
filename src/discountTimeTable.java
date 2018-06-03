@@ -7,15 +7,15 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import data.constVar;
-import data.station;
-import tools.mysqlExe;
+import data.ConstVar;
+import data.Station;
+import tools.MysqlExe;
 
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-public class discountTimeTable {
+public class DiscountTimeTable {
 	private JFrame frame;
 	private DefaultTableModel model;
 	private JTable table;
@@ -27,7 +27,7 @@ public class discountTimeTable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					discountTimeTable window = new discountTimeTable();
+					DiscountTimeTable window = new DiscountTimeTable();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,26 +53,26 @@ public class discountTimeTable {
 	/**
 	 * Create the application.
 	 */
-	public discountTimeTable() {
+	public DiscountTimeTable() {
 		initialize();
 	}
 	
 	public void showDiscount(int date, int direction, int startTime, int endTime, int startStation, int endStation) throws SQLException, ParseException {
 //		System.out.println(startStation);
 //		System.out.println(endStation);
-		int weekday = constVar.getWeekDay(date);
-		String start = station.ENG_NAME[startStation];
-		String end = station.ENG_NAME[endStation];
-		String startC = station.CHI_NAME[startStation];
-		String endC = station.CHI_NAME[endStation];
+		int weekday = ConstVar.getWeekDay(date);
+		String start = Station.ENG_NAME[startStation];
+		String end = Station.ENG_NAME[endStation];
+		String startC = Station.CHI_NAME[startStation];
+		String endC = Station.CHI_NAME[endStation];
 		if (direction == 1) {
-			startStation = station.ENG_NAME.length - 1 - startStation;
-			endStation = station.ENG_NAME.length - 1 - endStation;
+			startStation = Station.ENG_NAME.length - 1 - startStation;
+			endStation = Station.ENG_NAME.length - 1 - endStation;
 		}
 		model.setRowCount(0);
-		mysqlExe.RetVal ret = null;
+		MysqlExe.RetVal ret = null;
 		try {
-			ret = mysqlExe.execQuery(String.format(
+			ret = MysqlExe.execQuery(String.format(
 					"Select * FROM %s WHERE date = %s AND %s != -1 AND %s != -1 AND %s >= %d AND %s <= %d AND train_id IN "
 					+ "(SELECT train_id FROM earlyDiscount WHERE weekday = %d UNION SELECT train_id FROM studentDiscount WHERE weekday = %d)"
 						, dirTable[direction], date, start, end, start, startTime, end, endTime, weekday, weekday));
@@ -84,15 +84,15 @@ public class discountTimeTable {
 				StringBuffer student = new StringBuffer();
 				
 				// get discount by train id
-				mysqlExe.RetVal rsDis = null;
+				MysqlExe.RetVal rsDis = null;
 				try {
-					rsDis = mysqlExe.execQuery(String.format("SELECT * FROM earlyDiscount WHERE weekday = %d AND train_id = %s", weekday, train_id));
+					rsDis = MysqlExe.execQuery(String.format("SELECT * FROM earlyDiscount WHERE weekday = %d AND train_id = %s", weekday, train_id));
 					while (rsDis.res.next()) {
 						if (early.length() > 0) early.append(" / ");
 						early.append(rsDis.res.getString("earlyD"));
 					}
 					rsDis.conn.close();
-					rsDis = mysqlExe.execQuery(String.format("SELECT * FROM studentDiscount WHERE weekday = %d AND train_id = %s", weekday, train_id));
+					rsDis = MysqlExe.execQuery(String.format("SELECT * FROM studentDiscount WHERE weekday = %d AND train_id = %s", weekday, train_id));
 					while (rsDis.res.next()) {
 						if (student.length() > 0) student.append(" / ");
 						student.append(rsDis.res.getString("studentD") + "");

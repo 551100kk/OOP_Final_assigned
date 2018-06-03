@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
-import data.station;
-import tools.mysqlExe;
+import data.Station;
+import tools.MysqlExe;
 
 
-public class myTimeTable {
+public class MyTimeTable {
 
 	private JFrame frame;
 	private JTable table_down;
@@ -29,7 +29,7 @@ public class myTimeTable {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					myTimeTable window = new myTimeTable();
+					MyTimeTable window = new MyTimeTable();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,9 +58,9 @@ public class myTimeTable {
 	 */
 	public void setTimeDown(String date) {
 		model_down.setRowCount(0);
-		mysqlExe.RetVal ret = null;
+		MysqlExe.RetVal ret = null;
 		try {
-			ret = mysqlExe.execQuery("SELECT * FROM timeTable_down WHERE date = " + date);
+			ret = MysqlExe.execQuery("SELECT * FROM timeTable_down WHERE date = " + date);
 			while (ret.res.next()) {
 				Vector<String> row = new Vector<String>();
 				row.add(ret.res.getString(2));
@@ -88,9 +88,9 @@ public class myTimeTable {
 	 */
 	public void setTimeUp(String date) {
 		model_up.setRowCount(0);
-		mysqlExe.RetVal ret = null;
+		MysqlExe.RetVal ret = null;
 		try {
-			ret = mysqlExe.execQuery("SELECT * FROM timeTable_up WHERE date = " + date);
+			ret = MysqlExe.execQuery("SELECT * FROM timeTable_up WHERE date = " + date);
 			while (ret.res.next()) {
 				Vector<String> row = new Vector<String>();
 				row.add(ret.res.getString(2));
@@ -116,7 +116,7 @@ public class myTimeTable {
 	/**
 	 * Create the application.
 	 */
-	public myTimeTable() {
+	public MyTimeTable() {
 		initialize();
 	}
 
@@ -151,9 +151,9 @@ public class myTimeTable {
 		model_down = new DefaultTableModel(); 
 		model_up.addColumn("車次");
 		model_down.addColumn("車次");
-		for (int i = 0; i < station.CHI_NAME.length; i++) {
-			model_down.addColumn(station.CHI_NAME[i]);
-			model_up.addColumn(station.CHI_NAME[station.CHI_NAME.length - i - 1]);
+		for (int i = 0; i < Station.CHI_NAME.length; i++) {
+			model_down.addColumn(Station.CHI_NAME[i]);
+			model_up.addColumn(Station.CHI_NAME[Station.CHI_NAME.length - i - 1]);
 		}
 		
 		table_down = new JTable(model_down);

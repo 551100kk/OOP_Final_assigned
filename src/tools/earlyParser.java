@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.*;
 import org.json.*;
 
-import data.constVar;
+import data.ConstVar;
 
-public class earlyParser {
+public class EarlyParser {
 	/**
 	 * Read the json file.
 	 * @return file content.
@@ -30,7 +30,7 @@ public class earlyParser {
 	 * @throws FileNotFoundException 
 	 */
 	public static void initialize() throws SQLException, FileNotFoundException {
-		mysqlExe.execStmt("DELETE FROM earlyDiscount");
+		MysqlExe.execStmt("DELETE FROM earlyDiscount");
 		String file = readJSON();
 		JSONObject obj = new JSONObject(file);
 		JSONArray arr = obj.getJSONArray("DiscountTrains");
@@ -38,7 +38,7 @@ public class earlyParser {
 			String train_id = arr.getJSONObject(i).getString("TrainNo");
 			JSONObject disc = arr.getJSONObject(i).getJSONObject("ServiceDayDiscount");
 			for (int id = 0; id < 7; id++) {
-				String weekday = constVar.WEEKDAYS[id];
+				String weekday = ConstVar.WEEKDAYS[id];
 				Object discObj = disc.get(weekday); 
 				if (discObj.getClass() == org.json.JSONArray.class) {
 					for (int j = 0; j < ((JSONArray) discObj).length(); j++) {
@@ -46,16 +46,16 @@ public class earlyParser {
 						if (discount < 1.0e-9 || discount == 1.0) continue;
 						int tickets = ((JSONArray) discObj).getJSONObject(j).getInt("tickets");
 						System.out.println(String.format("%s, %d, %f, %d", train_id, id, discount, tickets));
-						mysqlExe.execStmt(String.format("INSERT INTO earlyDiscount VALUES (%s, %d, %f, %d)",
+						MysqlExe.execStmt(String.format("INSERT INTO earlyDiscount VALUES (%s, %d, %f, %d)",
 								train_id, id, discount, tickets));
 					}
 				}
 				else {
 					double discount = disc.getDouble(weekday);
 					if (discount < 1.0e-9 || discount == 1.0) continue; 
-					System.out.println(String.format("%s, %d, %f, %d", train_id, id, discount, constVar.TOTAL_SEATS));
-					mysqlExe.execStmt(String.format("INSERT INTO earlyDiscount VALUES (%s, %d, %f, %d)",
-							train_id, id, discount, constVar.TOTAL_SEATS));
+					System.out.println(String.format("%s, %d, %f, %d", train_id, id, discount, ConstVar.TOTAL_SEATS));
+					MysqlExe.execStmt(String.format("INSERT INTO earlyDiscount VALUES (%s, %d, %f, %d)",
+							train_id, id, discount, ConstVar.TOTAL_SEATS));
 				}
 				
 			}
