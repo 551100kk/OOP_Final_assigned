@@ -101,7 +101,7 @@ public class MyTimeTable {
 				for (int i = 0; i < 12; i++) {
 					int time = ret.res.getInt(i + 3);
 					String input = String.format("%02d:%02d", time / 100, time % 100);
-					if (time == -1) input = "";
+					if (time == -1) input = "*";
 					row.add(input);
 				}
 				model_up.addRow(row);

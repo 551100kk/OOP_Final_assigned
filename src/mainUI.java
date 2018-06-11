@@ -53,6 +53,8 @@ public class MainUI {
 	private JTextField newTicketUID;
 	private JTextField newTicketCode;
 	private JTextField newTicketCount;
+	SearchCandidate go = null;
+	SearchCandidate back = null;
 
 	/**
 	 * Launch the application.
@@ -250,18 +252,6 @@ public class MainUI {
 		bookCode.setBounds(90, 266, 235, 15);
 		panelBook.add(bookCode);
 
-		JLabel label_19 = new JLabel("\u7E3D\u50F9\u683C");
-		label_19.setFont(new Font("新細明體", Font.PLAIN, 12));
-		label_19.setBounds(374, 266, 60, 15);
-		panelBook.add(label_19);
-
-		JLabel totalPrice = new JLabel("0");
-		totalPrice.setEnabled(false);
-		totalPrice.setHorizontalAlignment(SwingConstants.TRAILING);
-		totalPrice.setFont(new Font("新細明體", Font.PLAIN, 12));
-		totalPrice.setBounds(444, 266, 235, 15);
-		panelBook.add(totalPrice);
-
 		JButton bookTicket = new JButton("\u8A02\u7968");
 		bookTicket.setEnabled(false);
 		bookTicket.setBounds(20, 291, 659, 23);
@@ -332,7 +322,6 @@ public class MainUI {
 		buySearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Random rn = new Random();
-				// information
 				String uid = uidField.getText();
 				if (uid.equals("")) {
 					JOptionPane.showMessageDialog(null, "使用者ID不可為空!", "InfoBox: Failed", JOptionPane.ERROR_MESSAGE);
@@ -381,8 +370,8 @@ public class MainUI {
 					backEarly = 1;
 				int side = seatSide.getSelectedIndex();
 				int type = seatType.getSelectedIndex();
-				SearchCandidate go = new SearchCandidate();
-				SearchCandidate back = new SearchCandidate();
+				go = new SearchCandidate();
+				back = new SearchCandidate();
 				go.search(goCandidate, date, startStationIndex, endStationIndex, goStartTime, goEndTime, count, side,
 						type, goEarly);
 				if (goBack.isSelected())
@@ -393,37 +382,81 @@ public class MainUI {
 					return;
 				}
 
-				// calculate price (defualt - random)
-				int price = 2000;
-
 				goCandidate.setEnabled(true);
 				backCandidate.setEnabled(true);
 				bookCode.setEnabled(true);
-				totalPrice.setEnabled(true);
 				bookTicket.setEnabled(true);
 				status.setText("請選擇班次");
-				totalPrice.setText(Integer.toString(price));
 				bookCode.setText(Integer.toString(code));
 
-				Train go_train = null;
-				Train back_train = null;
-				go_train = go.can.elementAt(goCandidate.getSelectedIndex());
-				if (goBack.isSelected())
-					back_train = back.can.elementAt(goCandidate.getSelectedIndex());
-				nextGoTicket = null;
-				nextBackTicket = null;
-				nextGoTicket = new BuyTicket(go_train, uid, code, startStationIndex, endStationIndex, count, side, type, price);
-				if (goBack.isSelected())
-					nextBackTicket = new BuyTicket(back_train, uid, code, endStationIndex, startStationIndex, count, side, type, price);
+				
 			}
 		});
 
 		bookTicket.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String uid = uidField.getText();
+				int code = Integer.parseInt(bookCode.getText());
+				int startStationIndex = buyStart.getSelectedIndex();
+				int endStationIndex = buyEnd.getSelectedIndex();
+				int side = seatSide.getSelectedIndex();
+				int type = seatType.getSelectedIndex();
+				int count = ticketCount.getSelectedIndex() + 1;
+				int goEarly = 0;
+				if (buyDate.getSelectedIndex() >= 5)
+					goEarly = 1;
+				int backEarly = 0;
+				if (buyBackDate.getSelectedIndex() >= 5)
+					backEarly = 1;
+				
+				Train go_train = null;
+				Train back_train = null;
+				go_train = go.can.elementAt(goCandidate.getSelectedIndex());
+				if (goBack.isSelected())
+					back_train = back.can.elementAt(goCandidate.getSelectedIndex());
+				
+				// calculate price (defualt - random)
+				int price1 = 2000, price2 = 2000;
+				double discount = 1.0;
+				int s1 = startStationIndex;
+				int s2 = endStationIndex;
+				if (s1 < s2) {
+					int tmp = s1;
+					s1 = s2;
+					s2 = tmp;
+				}
+				System.out.print(s1 + ", " + s2);
+				if (type == 3) price1 = price2 = Station.BusPrice[s1][s2];
+				else price1 = price2 = Station.StdPrice[s1][s2];
+
+				if (type == 2) {
+					price1 /= 2;
+					price2 /= 2;
+				}
+				if (type == 1) {
+					price1 = (int) (price1 * go_train.student);
+					if (goBack.isSelected()) price2 = (int) (price2 * back_train.student);
+				}
+				if (type == 0) {
+					if (goEarly == 1) price1 = (int) (price1 * go_train.early);
+					if (backEarly == 1 && goBack.isSelected()) price2 = (int) (price2 * back_train.early);
+				}
+				
+				price1 *= count;
+				price2 *= count;
+				int price = price1;
+				if (goBack.isSelected()) price += price2;
+				
+				nextGoTicket = null;
+				nextBackTicket = null;
+				nextGoTicket = new BuyTicket(go_train, uid, code, startStationIndex, endStationIndex, count, side, type, price);
+				if (goBack.isSelected())
+					nextBackTicket = new BuyTicket(back_train, uid, code, endStationIndex, startStationIndex, count, side, type, price);
+				
+				// Start to buy
 				goCandidate.setEnabled(false);
 				backCandidate.setEnabled(false);
 				bookCode.setEnabled(false);
-				totalPrice.setEnabled(false);
 				bookTicket.setEnabled(false);
 				try {
 					if (nextGoTicket != null) nextGoTicket.Commit();
