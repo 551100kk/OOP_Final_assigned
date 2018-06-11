@@ -9,10 +9,10 @@ import data.Station;
 import data.Train;
 import tools.MysqlExe.RetVal;
 
-public class SearchTicket {
+public class SearchCheapTicket {
 	public Vector<Train> can;
 	public final String direction[] = {"timeTable_down", "timeTable_up"};
-	public SearchTicket () {
+	public SearchCheapTicket () {
 		can = new Vector<Train>(); 
 	}
 	public void search(JComboBox<String> box, String date, int start, int end, int t1, int t2, int count, int side, int type, int early) {

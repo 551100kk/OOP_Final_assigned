@@ -98,6 +98,12 @@ public class ConstVar {
 		VALID_SEATS[6] = tmp.toArray(new String[tmp.size()]);		
 	}
 	
+	public static int getDateInt(String date) {
+		date = date.replace("/", "");
+		return Integer.parseInt(date);
+		
+	}
+	
 	public static int getWeekDay(int date) {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyyMMdd");
 		Date dat = null;
