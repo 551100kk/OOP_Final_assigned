@@ -777,7 +777,7 @@ public class MainUI {
 		search_no.setBounds(602, 233, 77, 23);
 		panelSearch.add(search_no);
 
-		ImageIcon ii = new ImageIcon("img/train.png");
+		ImageIcon ii = new ImageIcon("train.png");
 		JLabel trainImage = new JLabel(ii);
 		trainImage.setBounds(0, 20, 694, 176);
 		frame.getContentPane().add(trainImage);

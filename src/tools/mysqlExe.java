@@ -41,7 +41,7 @@ public class MysqlExe {
 	/**
 	 * Execute a sql.
 	 * @param sql SQL statement
-	 * @throws SQLException SQLException.
+	 * @throws SQLException
 	 */
 	public static void execStmt(String sql) throws SQLException {
 		if (debug == 1) System.out.println("[ExecStmt] " + sql);
@@ -61,7 +61,7 @@ public class MysqlExe {
 	 * Execute a sql and fetch results.
 	 * @param sql SQL statement
 	 * @return Result and Connection Object.
-	 * @throws SQLException SQLException.
+	 * @throws SQLException
 	 */
 	public static RetVal execQuery(String sql) throws SQLException {
 		if (debug == 1) System.out.println("[ExecQuery] " + sql);
