@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 import tools.BuyTicket;
 import tools.SearchByID;
-import tools.SearchCheapTicket;
+import tools.SearchCandidate;
 import tools.SearchTicketID;
 import tools.TimeTableParser;
 import tools.UpdateTicket;
@@ -35,6 +35,10 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 
+/**
+ * The main ui of the booking system.
+ * @author Jerry
+ */
 public class MainUI {
 	private JFrame frame;
 	private MyTimeTable winTimeTable;
@@ -52,6 +56,7 @@ public class MainUI {
 
 	/**
 	 * Launch the application.
+	 * @param args No args.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -178,7 +183,7 @@ public class MainUI {
 		label_10.setBounds(142, 125, 32, 15);
 		panelBook.add(label_10);
 
-		JComboBox<String> seatType = new JComboBox<String>(ConstVar.TICKET_TYPE);
+		JComboBox<String> seatType = new JComboBox(ConstVar.TICKET_TYPE);
 		seatType.setBounds(184, 122, 141, 21);
 		panelBook.add(seatType);
 
@@ -187,7 +192,7 @@ public class MainUI {
 		label_11.setBounds(20, 125, 32, 15);
 		panelBook.add(label_11);
 
-		JComboBox<String> seatSide = new JComboBox<String>(ConstVar.SEAT_TYPE);
+		JComboBox<String> seatSide = new JComboBox(ConstVar.SEAT_TYPE);
 		seatSide.setBounds(54, 122, 78, 21);
 		panelBook.add(seatSide);
 
@@ -376,8 +381,8 @@ public class MainUI {
 					backEarly = 1;
 				int side = seatSide.getSelectedIndex();
 				int type = seatType.getSelectedIndex();
-				SearchCheapTicket go = new SearchCheapTicket();
-				SearchCheapTicket back = new SearchCheapTicket();
+				SearchCandidate go = new SearchCandidate();
+				SearchCandidate back = new SearchCandidate();
 				go.search(goCandidate, date, startStationIndex, endStationIndex, goStartTime, goEndTime, count, side,
 						type, goEarly);
 				if (goBack.isSelected())

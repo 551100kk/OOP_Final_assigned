@@ -6,13 +6,16 @@ import java.util.*;
 
 import data.ConstVar;
 import org.json.*;
-
+/**
+ * The class is used to parser the student discount value from the given json file.
+ * @author Jerry
+ */
 public class StudentParser {
 
 	/**
 	 * Read the json file.
 	 * @return file content.
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException FileNotFoundException.
 	 */
 	public static String readJSON() throws FileNotFoundException {
 		StringBuffer str = new StringBuffer();
@@ -27,8 +30,8 @@ public class StudentParser {
 	
 	/**
 	 * Parser the json file.
-	 * @throws SQLException 
-	 * @throws FileNotFoundException 
+	 * @throws SQLException SQLException
+	 * @throws FileNotFoundException FileNotFoundException.
 	 */
 	public static void initialize() throws SQLException, FileNotFoundException {
 		MysqlExe.execStmt("DELETE FROM studentDiscount");

@@ -6,6 +6,10 @@ import data.ConstVar;
 import data.Train;
 import tools.MysqlExe.RetVal;
 
+/**
+ * The class is used to record the new bought ticket after the user made the final decision. 
+ * @author Jerry
+ */
 public class BuyTicket {
 	private Train train;
 	private String uid;
@@ -17,6 +21,17 @@ public class BuyTicket {
 	private int side;
 	private int price;
 
+	/**
+	 * @param train The train that the user chosed
+	 * @param uid User id.
+	 * @param code Booking code.
+	 * @param startStationIndex Departure station.
+	 * @param endStationIndex Destination station.
+	 * @param count Ticket count.
+	 * @param side The side of the seat.
+	 * @param type The type of the ticket.
+	 * @param price The price of the ticket.
+	 */
 	public BuyTicket(Train train, String uid, int code, int startStationIndex, int endStationIndex, int count,
 			int side, int type, int price) {
 		this.train = train;
@@ -30,6 +45,10 @@ public class BuyTicket {
 		this.price = price;
 	}
 
+	/**
+	 * Insert the ticket into the database.
+	 * @throws SQLException SQLException
+	 */
 	public void Commit() throws SQLException {
 		String[] seat = new String[count];
 		int now = 0;
@@ -77,10 +96,4 @@ public class BuyTicket {
 					));
 		}
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

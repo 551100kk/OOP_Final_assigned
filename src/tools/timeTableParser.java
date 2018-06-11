@@ -9,7 +9,7 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 
 /**
- * The class which is used to parse online time table. 
+ * This class is used to parse the online time table. 
  * @author Jerry
  */
 public class TimeTableParser {
@@ -20,7 +20,7 @@ public class TimeTableParser {
 	/**
 	 * Request the time table html file.
 	 * @param url target url
-	 * @throws IOException 
+	 * @throws IOException IOException
 	 */
 	public void getDoc(String url) throws IOException {
 		doc = Jsoup.connect(url).get();
@@ -30,7 +30,7 @@ public class TimeTableParser {
 	 * Parse the time table and insert to mysql.
 	 * @param date update date.
 	 * @param dir go south or north.
-	 * @throws SQLException 
+	 * @throws SQLException SQLException
 	 */
 	public void parseDate(String date, int dir) throws SQLException {
 		try {
@@ -66,8 +66,8 @@ public class TimeTableParser {
 	/**
 	 * Update the time table of date.
 	 * @param date update date.
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws SQLException SQLException
+	 * @throws IOException IOException
 	 */
 	public void updateDay(String date) throws SQLException, IOException {
 		System.out.println("Parsing date " + date);
@@ -87,9 +87,9 @@ public class TimeTableParser {
 		System.out.println("Successed");
 	}
 	
-	public static void main(String[] args) throws SQLException, IOException {
-		TimeTableParser T = new TimeTableParser();
-		T.updateDay("20180527");
-	}
+//	public static void main(String[] args) throws SQLException, IOException {
+//		TimeTableParser T = new TimeTableParser();
+//		T.updateDay("20180527");
+//	}
 
 }

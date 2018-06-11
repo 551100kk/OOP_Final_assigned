@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
 
 import tools.MysqlExe.RetVal;
 
+/**
+ * This class is used to search the ticket by the ticket information.
+ * @author Jerry
+ */
 public class SearchTicketID {
 	private String uid;
 	private String train_id;
@@ -14,6 +18,13 @@ public class SearchTicketID {
 	private int start;
 	private int end;
 
+	/**
+	 * @param uid User ID.
+	 * @param train_id Train ID.
+	 * @param date Departure date.
+	 * @param start Departure Station.
+	 * @param end Destination Station.
+	 */
 	public SearchTicketID(String uid, String train_id, int date, int start, int end) {
 		this.uid = uid;
 		this.train_id = train_id;
@@ -22,6 +33,9 @@ public class SearchTicketID {
 		this.end = end;
 	}
 	
+	/**
+	 * Search the tickets.
+	 */
 	public void exec() {
 		Vector<String> arr = new Vector<String>();
 		RetVal ret = null;

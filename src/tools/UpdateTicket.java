@@ -5,17 +5,29 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import tools.MysqlExe.RetVal;
 
+/**
+ * This class is used to update the ticket by the booking code.
+ * @author Jerry
+ */
 public class UpdateTicket {
 	private String uid;
 	private String code;
 	private int count;
 	
+	/**
+	 * @param uid User ID.
+	 * @param code Booking code.
+	 * @param count Ticket count.
+	 */
 	public UpdateTicket(String uid, String code, int count) {
 		this.uid = uid;
 		this.code = code;
 		this.count = count;
 	}
 	
+	/**
+	 * Update the ticket.
+	 */
 	public void exec() {
 		Vector<String> arr = new Vector<String>();
 		RetVal ret = null;

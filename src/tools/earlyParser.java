@@ -7,11 +7,15 @@ import org.json.*;
 
 import data.ConstVar;
 
+/**
+ * The class is used to parser the early discount value from the given json file.
+ * @author Jerry
+ */
 public class EarlyParser {
 	/**
 	 * Read the json file.
 	 * @return file content.
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException FileNotFoundException.
 	 */
 	public static String readJSON() throws FileNotFoundException {
 		StringBuffer str = new StringBuffer();
@@ -26,8 +30,8 @@ public class EarlyParser {
 	
 	/**
 	 * Parser the json file.
-	 * @throws SQLException 
-	 * @throws FileNotFoundException 
+	 * @throws SQLException SQLException.
+	 * @throws FileNotFoundException FileNotFoundException.
 	 */
 	public static void initialize() throws SQLException, FileNotFoundException {
 		MysqlExe.execStmt("DELETE FROM earlyDiscount");

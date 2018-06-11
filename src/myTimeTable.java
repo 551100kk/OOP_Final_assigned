@@ -13,7 +13,10 @@ import javax.swing.JScrollPane;
 import data.Station;
 import tools.MysqlExe;
 
-
+/**
+ * This class is the UI of the time table.
+ * @author Jerry
+ */
 public class MyTimeTable {
 
 	private JFrame frame;
@@ -24,6 +27,7 @@ public class MyTimeTable {
 
 	/**
 	 * Launch the application.
+	 * @param args No args.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -9,15 +9,28 @@ import data.ConstVar;
 import data.Station;
 import tools.MysqlExe.RetVal;
 
+/**
+ * This class is used to search the ticket by the booking code.
+ * @author Jerry
+ */
 public class SearchByID {
 	private String uid;
 	private String code;
 	
+	/**
+	 * @param uid User ID.
+	 * @param code Booking code.
+	 */
 	public SearchByID(String uid, String code) {
 		this.uid = uid;
 		this.code = code;
 	}
 
+	/**
+	 * Search the ticket.
+	 * @param tostr Return string or pop the message box.
+	 * @return The search result.
+	 */
 	public String exec(int tostr) {
 		Vector<String> arr = new Vector<String>();
 		RetVal ret = null;

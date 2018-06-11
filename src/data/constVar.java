@@ -10,6 +10,10 @@ import java.util.Date;
 
 import tools.MysqlExe;
 
+/**
+ * This class record some constant value and provide some useful methods.
+ * @author Jerry
+ */
 public class ConstVar {
 	public static final int FETCH_DAYS = 28;
 	public static final String[] WEEKDAYS = {
@@ -98,12 +102,22 @@ public class ConstVar {
 		VALID_SEATS[6] = tmp.toArray(new String[tmp.size()]);		
 	}
 	
+	/**
+	 * Convert the date format.
+	 * @param date The date whose format is "YYYY/MM/DD".
+	 * @return The integer format.
+	 */
 	public static int getDateInt(String date) {
 		date = date.replace("/", "");
 		return Integer.parseInt(date);
 		
 	}
 	
+	/**
+	 * Convert the date to the weekday.
+	 * @param date The date whose format is "YYYY/MM/DD".
+	 * @return The week day.
+	 */
 	public static int getWeekDay(int date) {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyyMMdd");
 		Date dat = null;
@@ -118,6 +132,11 @@ public class ConstVar {
 		return (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 	}
 	
+	/**
+	 * Convert the date to the weekday.
+	 * @param date The date whose format is integer.
+	 * @return The week day.
+	 */
 	public static int getWeekDay(String date) {
 		SimpleDateFormat format1=new SimpleDateFormat("yyyyMMdd");
 		Date dat = null;
@@ -132,6 +151,12 @@ public class ConstVar {
 		return (c.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 	}
 	
+	/**
+	 * Get the duration by the given two time.
+	 * @param t1 Start time.
+	 * @param t2 End time.
+	 * @return Duration.
+	 */
 	public static int getDur(int t1, int t2) {
 		int h1 = t1 / 100;
 		int m1 = t1 % 100;
@@ -144,6 +169,11 @@ public class ConstVar {
 		return hh * 100 + mm;
 	}
 	
+	/**
+	 * This method is used to test the class. 
+	 * @param args No args.
+	 * @throws SQLException SQLException
+	 */
 	public static void main(String[] args) throws SQLException {
 		for (int i = 0; i < 9; i++) {
 			for (String seat: VALID_SEATS[i]) {

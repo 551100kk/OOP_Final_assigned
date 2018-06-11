@@ -1,19 +1,35 @@
 package tools;
 import java.sql.*;
 
+/**
+ * This class is used to make the communication with database easier.
+ * @author Jerry
+ */
 public class MysqlExe {
 	private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/oop_finalproject_assigned?useSSL=false&serverTimezone=UTC";
 	private static final String USER = "root";
 	private static final String PASS = "root";
 	private static int debug;
 	
+	/**
+	 * Check if the debug mod on.
+	 * @return If the debug mod on.
+	 */
 	public static int getDebug() {
 		return debug;
 	}
+	/**
+	 * Set the debug mod.
+	 * @param debug The debug mod.
+	 */
 	public static void setDebug(int debug) {
 		MysqlExe.debug = debug;
 	}
 	
+	/**
+	 * Get the handler of the connection.
+	 * @author Jerry
+	 */
 	public static class RetVal {
 		public Connection conn;
 		public ResultSet res;
@@ -25,7 +41,7 @@ public class MysqlExe {
 	/**
 	 * Execute a sql.
 	 * @param sql SQL statement
-	 * @throws SQLException
+	 * @throws SQLException SQLException.
 	 */
 	public static void execStmt(String sql) throws SQLException {
 		if (debug == 1) System.out.println("[ExecStmt] " + sql);
@@ -45,7 +61,7 @@ public class MysqlExe {
 	 * Execute a sql and fetch results.
 	 * @param sql SQL statement
 	 * @return Result and Connection Object.
-	 * @throws SQLException
+	 * @throws SQLException SQLException.
 	 */
 	public static RetVal execQuery(String sql) throws SQLException {
 		if (debug == 1) System.out.println("[ExecQuery] " + sql);

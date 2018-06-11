@@ -15,13 +15,19 @@ import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+/**
+ * This class is used to show the discount time table.
+ * @author Jerry
+ */
 public class DiscountTimeTable {
 	private JFrame frame;
 	private DefaultTableModel model;
 	private JTable table;
 	public final String dirTable[] = {"timeTable_down", "timeTable_up"};
+
 	/**
 	 * Launch the application.
+	 * @param args No args.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -57,6 +63,16 @@ public class DiscountTimeTable {
 		initialize();
 	}
 	
+	/**
+	 * @param date Departure date.
+	 * @param direction Go north or south.
+	 * @param startTime Departure time.
+	 * @param endTime Arrival time.
+	 * @param startStation Departure station.
+	 * @param endStation Destination station.
+	 * @throws SQLException SQLException
+	 * @throws ParseException ParseException
+	 */
 	public void showDiscount(int date, int direction, int startTime, int endTime, int startStation, int endStation) throws SQLException, ParseException {
 //		System.out.println(startStation);
 //		System.out.println(endStation);
@@ -151,11 +167,5 @@ public class DiscountTimeTable {
 		
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
-		
-//		try {
-//			showDiscount(20180522, 1, 0, 2359, 11, 1);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 }
