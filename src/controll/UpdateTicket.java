@@ -30,9 +30,11 @@ public class UpdateTicket {
 	 * Update the ticket.
 	 */
 	public void exec() {
-		Vector<String> arr = new Vector<String>();
+		int now_count = 0;
 		RetVal ret = null;
 		boolean userCheck = true;
+		boolean gobackCheck = false;
+		int st = 0, ed = 0;
 		try {
 			ret = MysqlExe.execQuery(String.format(
 					"SELECT * FROM tickets WHERE code=\"%s\"", code
@@ -40,9 +42,19 @@ public class UpdateTicket {
 			while (ret.res.next()) {
 				String uid = ret.res.getString("uid");
 				if (!uid.equals(this.uid)) userCheck = false;
-				String seat = ret.res.getString("seat_id");
-				arr.add(seat);
+				now_count++;
 			}
+			ret = MysqlExe.execQuery(String.format(
+					"SELECT count(*), start, end FROM tickets WHERE code=\"%s\" GROUP BY start, end", code
+					));
+			int dir_count = 0;
+			while (ret.res.next()) {
+				st = ret.res.getInt("start");
+				ed = ret.res.getInt("end");
+				dir_count++;
+			}
+			if (dir_count == 2)
+				gobackCheck = true;
 			ret.conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -53,7 +65,9 @@ public class UpdateTicket {
 				e.printStackTrace();
 			}
 		}
-		if (arr.isEmpty()) {
+		if (gobackCheck)
+			now_count /= 2;
+		if (now_count == 0) {
 			JOptionPane.showMessageDialog(null, "您輸入的訂位代號有誤，請重新輸入!", "InfoBox: Failed",
 					JOptionPane.ERROR_MESSAGE);
 			return;
@@ -63,13 +77,15 @@ public class UpdateTicket {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (count < 0 || arr.size() < count) {
+		if (count < 0 || now_count < count) {
 			JOptionPane.showMessageDialog(null, "票數不足!", "InfoBox: Failed",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		try {
-			MysqlExe.execStmt(String.format("DELETE FROM tickets WHERE code=%s LIMIT %d", code, arr.size() - count));
+			MysqlExe.execStmt(String.format("DELETE FROM tickets WHERE code=%s AND start=%d LIMIT %d", code, st, now_count - count));
+			if (gobackCheck)
+				MysqlExe.execStmt(String.format("DELETE FROM tickets WHERE code=%s AND start=%d LIMIT %d", code, ed, now_count - count));
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "更新失敗!", "InfoBox: Failed",
 					JOptionPane.ERROR_MESSAGE);

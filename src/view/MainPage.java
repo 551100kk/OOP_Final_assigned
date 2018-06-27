@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -58,6 +59,17 @@ public class MainPage {
 	SearchCandidate go = null;
 	SearchCandidate back = null;
 	private JPanel panelBook;
+	// ticket
+
+	String uid;
+	int code;
+	int startStationIndex;
+	int endStationIndex;
+	int side;
+	int type;
+	int count;
+	int goEarly;
+	int backEarly;
 
 	/**
 	 * Launch the application.
@@ -92,6 +104,7 @@ public class MainPage {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setTitle("\u9AD8\u9435\u8A02\u7968\u7CFB\u7D71");
 		frame.setBounds(100, 100, 708, 597);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -309,24 +322,24 @@ public class MainPage {
 		// but ticket - search
 		buySearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Random rn = new Random();
-				String uid = uidField.getText();
+				uid = uidField.getText();
+				code = Math.abs(new Random().nextInt());
+				startStationIndex = buyStart.getSelectedIndex();
+				endStationIndex = buyEnd.getSelectedIndex();
+				side = seatSide.getSelectedIndex();
+				type = seatType.getSelectedIndex();
+				count = ticketCount.getSelectedIndex() + 1;
+				goEarly = buyDate.getSelectedIndex() >= 5 ? 1 : 0;
+				backEarly = buyBackDate.getSelectedIndex() >= 5 ? 1 : 0;
+
 				if (uid.equals("")) {
 					JOptionPane.showMessageDialog(null, "ㄏノIDぃ!", "InfoBox: Failed", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				String date = (String) buyDate.getSelectedItem();
-				String backDate = (String) buyBackDate.getSelectedItem();
-				int code = Math.abs(rn.nextInt());
-
-				// user
-				int startStationIndex = buyStart.getSelectedIndex();
-				int endStationIndex = buyEnd.getSelectedIndex();
 				if (startStationIndex == endStationIndex) {
 					JOptionPane.showMessageDialog(null, "癬㎝癢ぃ妓!", "InfoBox: Failed", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				int count = ticketCount.getSelectedIndex() + 1;
 				if (goBack.isSelected() && count > 5) {
 					JOptionPane.showMessageDialog(null, "ㄓ布程禦5眎!", "InfoBox: Failed", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -350,14 +363,8 @@ public class MainPage {
 					return;
 				}
 
-				int goEarly = 0;
-				if (buyDate.getSelectedIndex() >= 5)
-					goEarly = 1;
-				int backEarly = 0;
-				if (buyBackDate.getSelectedIndex() >= 5)
-					backEarly = 1;
-				int side = seatSide.getSelectedIndex();
-				int type = seatType.getSelectedIndex();
+				String date = (String) buyDate.getSelectedItem();
+				String backDate = (String) buyBackDate.getSelectedItem();
 				go = new SearchCandidate();
 				back = new SearchCandidate();
 				go.search(goCandidate, date, startStationIndex, endStationIndex, goStartTime, goEndTime, count, side,
@@ -382,29 +389,13 @@ public class MainPage {
 
 		bookTicket.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String uid = uidField.getText();
-				int code = Integer.parseInt(bookCode.getText());
-				int startStationIndex = buyStart.getSelectedIndex();
-				int endStationIndex = buyEnd.getSelectedIndex();
-				int side = seatSide.getSelectedIndex();
-				int type = seatType.getSelectedIndex();
-				int count = ticketCount.getSelectedIndex() + 1;
-				int goEarly = 0;
-				if (buyDate.getSelectedIndex() >= 5)
-					goEarly = 1;
-				int backEarly = 0;
-				if (buyBackDate.getSelectedIndex() >= 5)
-					backEarly = 1;
-
 				Train go_train = null;
 				Train back_train = null;
 				go_train = go.can.elementAt(goCandidate.getSelectedIndex());
 				if (goBack.isSelected())
-					back_train = back.can.elementAt(goCandidate.getSelectedIndex());
-
+					back_train = back.can.elementAt(backCandidate.getSelectedIndex());
 				// calculate price (defualt - random)
 				int price1 = 2000, price2 = 2000;
-				double discount = 1.0;
 				int s1 = startStationIndex;
 				int s2 = endStationIndex;
 				if (s1 < s2) {
@@ -458,7 +449,8 @@ public class MainPage {
 						nextGoTicket.Commit();
 					if (nextBackTicket != null)
 						nextBackTicket.Commit();
-					JOptionPane.showMessageDialog(null, "璹布ЧΘ\n莱肂: " + price, "InfoBox: Successed", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "璹布ЧΘ\n璹腹: " + code + "\n莱肂: " + price,
+							"InfoBox: Successed", JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "璹布ア毖", "InfoBox: Failed", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
@@ -500,7 +492,7 @@ public class MainPage {
 		deleteTicket.setBounds(331, 34, 107, 23);
 		panelCancel.add(deleteTicket);
 
-		JRadioButton reduceTicket = new JRadioButton("\u6E1B\u5C11\u7968\u6578");
+		JRadioButton reduceTicket = new JRadioButton("\u4FEE\u6539\u7968\u6578");
 		reduceTicket.setBounds(331, 62, 86, 23);
 		panelCancel.add(reduceTicket);
 
