@@ -19,7 +19,7 @@ public class EarlyParser {
 	 */
 	public static String readJSON() throws FileNotFoundException {
 		StringBuffer str = new StringBuffer();
-		InputStream f = new FileInputStream("earlyDiscount.json");
+		InputStream f = new FileInputStream("data/earlyDiscount.json");
 		Scanner sc = new Scanner(f);
 		while (sc.hasNext()) {
 			str.append(sc.next() + " ");

@@ -2,11 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="src/|img/" kind="src" path=""/>
+	<classpathentry excluding="src/|img/|data/" kind="src" path=""/>
 	<classpathentry kind="src" path="img"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_171/bin/mysql-connector-java-8.0.11.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_171/bin/jsoup-1.11.3.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_171/bin/json-20180130.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_171/bin/sqlite-jdbc-3.23.1.jar"/>
+	<classpathentry kind="lib" path="official jar/json-20180130.jar"/>
+	<classpathentry kind="lib" path="official jar/jsoup-1.11.3.jar"/>
+	<classpathentry kind="lib" path="official jar/mysql-connector-java-8.0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

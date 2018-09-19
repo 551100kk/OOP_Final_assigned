@@ -19,7 +19,7 @@ public class StudentParser {
 	 */
 	public static String readJSON() throws FileNotFoundException {
 		StringBuffer str = new StringBuffer();
-		InputStream f = new FileInputStream("universityDiscount.json");
+		InputStream f = new FileInputStream("data/universityDiscount.json");
 		Scanner sc = new Scanner(f);
 		while (sc.hasNext()) {
 			str.append(sc.next() + " ");

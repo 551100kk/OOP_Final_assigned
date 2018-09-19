@@ -17,4 +17,24 @@ All of the above jars are in "official jar/"
 
 #### Usage
 
-![search](img/search.png)
+* Import database
+
+  ```mysql
+  create database oop_finalproject_assigned;
+  use oop_finalproject_assigned;
+  source oopFinal.sql;
+  ```
+
+* Use Eclipse to open the project.
+
+* Run MainPage.java to start the application.
+
+![search](img/booking.png)
+
+![search](img/searching.png)
+
+![search](img/modification.png)
+
+#### BUG
+
+* All the Chinese character are encoded in BIG-5.
